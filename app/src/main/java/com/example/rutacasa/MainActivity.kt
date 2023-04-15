@@ -125,13 +125,19 @@ class MainActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             val call = getRetrofit().create(ApiService::class.java).getRoute("5b3ce3597851110001cf62488d38aa048bea4519ae3177df424c06de", start, end)
             if (call.isSuccessful) {
-
+                //Aquí se pintará la ruta
+                drawRoute(call.body())
             } else {
 
             }
         }
     }
 
+    private fun drawRoute(routeResponse: RouteResponse?){
+        val line = Polyline()
+        //line.setPoints()
+        map?.overlays?.add(line)
+    }
     private fun getRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://openrouteservice.org/")
