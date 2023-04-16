@@ -18,13 +18,13 @@ interface ApiService {
     @GET("v2/directionsfoot-walking")
     suspend fun getRoute(
         @Query("api_key") key: String,
-        @Query("start") start: String,
-        @Query("end") end: String
+        @Query("start",encoded = true) start: String,
+        @Query("end",encoded = true) end: String
     ): Coordinates
 }
 
-object Directions {
-    val retrofitService: ApiService by lazy {
+   object Directions {
+    val apiService: ApiService by lazy {
         retrofit.create(ApiService::class.java)
     }
 }

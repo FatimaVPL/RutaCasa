@@ -1,7 +1,5 @@
 package com.example.rutacasa
 
-import com.google.gson.annotations.SerializedName
-
 data class Coordinates(
     val type: String, val features: List<Feature>
 )

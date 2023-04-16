@@ -15,8 +15,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.RutaCasa"
+        tools:replace="android:allowBackup"
         tools:targetApi="31">
 
         <activity
