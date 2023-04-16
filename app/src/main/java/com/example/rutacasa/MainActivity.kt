@@ -12,6 +12,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -49,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         //map!!.overlays.add(ubicacion)
         val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         val locationProvider = LocationManager.GPS_PROVIDER
-        val currentLocation = locationManager.getLastKnownLocation(locationProvider)
+       // val currentLocation = locationManager.getLastKnownLocation(locationProvider)
 
         //MapController
         val mapController = map!!.controller
@@ -60,9 +61,9 @@ class MainActivity : AppCompatActivity() {
         //Add markers
         val markerStart = Marker(map)
         markerStart.isDraggable = true
-        markerStart.position = currentLocation?.let { GeoPoint(it.latitude, currentLocation.longitude) }
-        markerStart.title = "Punto Inicio"
-        map!!.overlays.add(markerStart)
+       // markerStart.position = currentLocation?.let { GeoPoint(it.latitude, currentLocation.longitude) }
+       // markerStart.title = "Punto Inicio"
+      //  map!!.overlays.add(markerStart)
 
         val markerEnd = Marker(map)
         markerEnd.isDraggable = true
@@ -120,10 +121,14 @@ class MainActivity : AppCompatActivity() {
         btnVerRuta = findViewById(R.id.btnCalcularRuta)
 
         btnVerRuta.setOnClickListener{
+            start = startPoint.toIntString()
+            end = "20.1409401,-101.1512808"
+            createRoute()
             map!!.setOnTouchListener(object : View.OnTouchListener {
                 override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-                    start = ""
-                    end = ""
+                    start = "-100.8780778,20.1940547"
+                    end = "-100.8825362,20.2138762"
+                    createRoute()
                     if (event?.action == MotionEvent.ACTION_UP) {
                         //Click
                         if (start.isEmpty()) {
@@ -191,7 +196,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun drawRoute(routeResponse: RouteResponse?){
         val line = Polyline()
-        //line.setPoints()
+        routeResponse?.features?.first()?.geometry?.coordinates?.forEach {
+            line.setPoints(arrayListOf((GeoPoint(it[1],it[0]))))
+        }
         map?.overlays?.add(line)
     }
     private fun getRetrofit(): Retrofit {
